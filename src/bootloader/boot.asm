@@ -2,6 +2,8 @@ org 0x7C00
 bits 16
 
 %define ENDL 0x0D, 0x0A
+%define BYTES_PER_SECTOR 512
+%define SECTORS_PER_CLUSTER 1
 
 ;
 ; BIOS loads this sector at address 0x7C00
@@ -13,11 +15,11 @@ nop
 
 ;
 ; FAT12 BIOS Parameter Block
-; Required so BIOS recognizes this as a valid boot disk
+; Layout mirrors the FAT reference model defined in fat.c
 ;
 bdb_oem:                  db 'MSWIN4.1'
-bdb_bytes_per_sector:     dw 512
-bdb_sectors_per_cluster:  db 1
+bdb_bytes_per_sector:     dw BYTES_PER_SECTOR
+bdb_sectors_per_cluster:  db SECTORS_PER_CLUSTER
 bdb_reserved_sectors:     dw 1
 bdb_fat_count:            db 2
 bdb_dir_entries_count:    dw 224
@@ -73,4 +75,3 @@ msg_hello:
 
 times 510-($-$$) db 0
 dw 0xAA55
-
